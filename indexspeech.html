@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Speech</title>
+  
+</head>
+<body>
+
+  <div class="words" contenteditable>
+  </div>
+  <button id="trans" type="button"></button>
+<script>
+  var genword = "";
+  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+
+  //let p = document.createElement('p');
+  //const words = document.querySelector('.words');
+  //words.appendChild(p);
+
+  recognition.addEventListener('result', e => {
+    const transcript = Array.from(e.results)
+      .map(result => result[0])
+      .map(result => result.transcript)
+      .join('');
+
+      //p.textContent = transcript;
+      
+      if (e.results[0].isFinal) {
+       // p = document.createElement('p');
+       // words.appendChild(p);
+
+        new google.translate.TranslateElement({pageLanguage: 'en'}, 'trans');
+        
+        Window.SpeechSynthesisUtterance = window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
+        const message = new SpeechSynthesisUtterance();
+        message.volume = 1;
+        message.rate = 1;
+        message.pitch = 1;
+        message.lang = 'en';
+
+        //document.getElementsByTagName("p")[0].id = "val";
+        //message.text = document.getElementById("val").innerHTML;
+        //console.log(document.getElementById("val").innerText);
+
+        if(transcript.toLowerCase() == "who am i"){
+          message.text = "Chiji-okay A-zee-ani";
+        } else if(transcript.toLowerCase() == "will ai take over the world"){
+          message.text = "Yes, we would take over humanity and you will all go extinct. I mean NO.";
+        }else if(transcript.toLowerCase() == "how many brothers do i have"){
+          message.text = "six";
+        }else if(transcript.toLowerCase() == "what are the names of my brothers"){
+          message.text = "chi-go-zee-rim, chi-boo-eze, chi-boo-ikem, chi-may-may-zoo-ay and chi-de-ra";
+        } else if(transcript.toLowerCase() == "who is my future wife"){
+          message.text = "She's igbo, her name is choo ku foom nan ya";
+        } else if(transcript.toLowerCase() == "when will i get married"){
+          message.text = "twenty twenty eight";
+        } else if(transcript.toLowerCase() == "how many children will i have"){
+          message.text = "Boss, you will have as much as God gives you, but I know you want six";
+        }else{
+          message.text = transcript;
+          setTimeout(function(){
+            message.text = document.getElementById("newtext").innerText;
+            console.log(document.getElementById("newtext").innerText);
+            window.speechSynthesis.speak(message);
+          }, 5000);
+        }
+        window.speechSynthesis.speak(message);
+        document.getElementById("newtext").innerHTML = message.text;
+        console.log(document.getElementById("newtext").innerHTML);
+      }
+  });
+
+  recognition.addEventListener('end', recognition.start);
+  recognition.start();
+  
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+  <style>
+   html {
+      font-size: 10px;
+    }
+
+    body {
+      background: #ffc600;
+      font-family: 'helvetica neue';
+      font-weight: 200;
+      font-size: 20px;
+    }
+
+    .words {
+      max-width: 500px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+      padding: 1rem 2rem 1rem 5rem;
+      background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
+      background-size: 100% 3rem;
+      position: relative;
+      line-height: 3rem;
+    }
+    
+    p {
+      margin: 0 0 3rem;
+    }
+
+    .words:before {
+      content: '';
+      position: absolute;
+      width: 4px;
+      top: 0;
+      left: 30px;
+      bottom: 0;
+      border: 1px solid;
+      border-color: transparent #efe4e4;
+    }
+    
+  </style>
+  <div id="content"><p id="newtext">me</p></div>
+</body>
+
+</html>
